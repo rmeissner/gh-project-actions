@@ -16,6 +16,7 @@ jobs:
           with:
               node-version: ${{ env.NODE_VERSION }}
               cache: "npm"
+        - run: npm ci
         - run: npm run exec
         - run: git checkout -b ${{github.run_number}}
         - run: git add graphs
