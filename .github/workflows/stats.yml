@@ -1,0 +1,23 @@
+name: "Sprint Stats"
+on:
+  schedule:
+    - cron: '* * * * *'
+  workflow_dispatch:
+
+env:
+    NODE_VERSION: 20.11.0
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v2
+          with:
+              node-version: ${{ env.NODE_VERSION }}
+              cache: "npm"
+        - run: npm run exec
+        - run: git checkout -b ${{github.run_number}}
+        - run: git add graphs
+        - run: git commit -m "Add new graphs"
+        - run: git push
