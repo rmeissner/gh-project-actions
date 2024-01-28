@@ -2,6 +2,8 @@ import { GraphConfig, dynamicRender } from "./render";
 import { Field, ProjectItem } from "./source";
 import fs from "fs";
 
+export const clean = (value: string): string => value.toLowerCase().replace(" ", "_")
+
 export const readJsonFile = (path: string, name: string) : any | undefined => {
     const fileName = path + name + ".json"
     if (!fs.existsSync(fileName)) return undefined

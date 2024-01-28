@@ -1,9 +1,9 @@
 import { GraphDataset, render } from "./render"
 import { Field, Iteration } from "./source"
-import { asDate, readJsonFile, writeFile } from "./utils"
+import { asDate, clean, readJsonFile, writeFile } from "./utils"
 
 export const updateBurnDown = async (runId: string, stati: Field[], iteration: Iteration, team: string, newDatasets: GraphDataset[]) => {
-    const name = iteration.title.toLowerCase().replace(" ", "_")
+    const name = clean(iteration.title)
     // Store new Burn Down Data
     writeFile(`stats/${name}/burn_down_data/`, `${team}_${runId}`, "json", JSON.stringify(newDatasets))
     // Render Burn Down Chart
