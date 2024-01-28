@@ -1,14 +1,22 @@
 import { createCanvas } from "canvas";
 import { Chart } from "chart.js/auto";
 import fs from "fs";
+import { writeFile } from "./utils";
+
+export interface GroupConfig {
+  fill?: boolean;
+  backgroundColor?: string;
+}
 
 export interface GraphConfig {
+  type?: "bar" | "line" | undefined;
   stacked?: boolean | undefined;
   path: string;
   name: string;
+  groupConfigs?: Map<string, GroupConfig>;
 }
 
-interface GraphDataset {
+export interface GraphDataset {
   label: string;
   data: number[];
 }
@@ -35,10 +43,14 @@ const generatePNG = (
   };
 
   new Chart(ctx, {
-    type: "bar",
+    type: config.type ?? "bar",
     data: {
       labels,
-      datasets,
+      datasets: datasets.map((ds) => ({
+        fill: true,
+        ...ds,
+        ...config.groupConfigs?.get(ds.label),
+      })),
     },
     options: {
       indexAxis: "x",
@@ -47,6 +59,7 @@ const generatePNG = (
           stacked: config.stacked,
         },
         y: {
+          min: 0,
           stacked: config.stacked,
         },
       },
@@ -57,27 +70,59 @@ const generatePNG = (
   return canvas.toBuffer("image/png");
 };
 
-export const dynamicRender = async <I>(
+export const buildDatasets = async <I>(
   items: Array<I>,
   labelProcessor: (items: Array<I>) => Promise<Array<string>>,
   groupsProcessor: (items: Array<I>) => Promise<Array<string>>,
-  dataProcessor: (label: string, group: string, items: Array<I>) => Promise<number>,
-  config: GraphConfig
-): Promise<any> => {
+  dataProcessor: (
+    label: string,
+    group: string,
+    items: Array<I>
+  ) => Promise<number>
+): Promise<{ labels: Array<string>; datasets: Array<GraphDataset> }> => {
   const labels: Array<string> = await labelProcessor(items);
   const groups: Array<string> = await groupsProcessor(items);
   const datasets: Array<GraphDataset> = await Promise.all(
     groups.map(async (group) => {
-        return {
-            label: group,
-            data: await Promise.all(labels.map((label) => dataProcessor(label, group, items)))
-        }
-        
+      return {
+        label: group,
+        data: await Promise.all(
+          labels.map((label) => dataProcessor(label, group, items))
+        ),
+      };
     })
   );
-  const graphBuffer = generatePNG(labels, datasets, config);
+  return {
+    labels,
+    datasets,
+  };
+};
 
-    // TODO: extract
-  if (!fs.existsSync(config.path)) fs.mkdirSync(config.path, { recursive: true });
-  fs.writeFileSync(config.path + config.name + ".png", graphBuffer);
+export const render = async (
+  labels: Array<string>,
+  datasets: Array<GraphDataset>,
+  config: GraphConfig
+): Promise<any> => {
+  const graphBuffer = generatePNG(labels, datasets, config);
+  writeFile(config.path, config.name, "png", graphBuffer);
+};
+
+export const dynamicRender = async <I>(
+  items: Array<I>,
+  labelProcessor: (items: Array<I>) => Promise<Array<string>>,
+  groupsProcessor: (items: Array<I>) => Promise<Array<string>>,
+  dataProcessor: (
+    label: string,
+    group: string,
+    items: Array<I>
+  ) => Promise<number>,
+  config: GraphConfig
+): Promise<any> => {
+  const { labels, datasets } = await buildDatasets(
+    items,
+    labelProcessor,
+    groupsProcessor,
+    dataProcessor
+  );
+  await render(labels, datasets, config);
 };
