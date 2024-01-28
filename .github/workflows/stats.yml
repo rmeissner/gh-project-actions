@@ -22,9 +22,7 @@ jobs:
             API_ACCESS_TOKEN: ${{ secrets.API_ACCESS_TOKEN }}
             GH_ORG: safe-global
             GH_ORG_PROJECT_NUMBER: 14
-        - run: git checkout -b run_${{github.run_number}}
-        - run: git add graphs
         - run: git config --global user.email "bot@rimeissner.dev"
         - run: git config --global user.name "Stat Bot"
-        - run: git commit -m "Add new graphs"
-        - run: git push --set-upstream origin run_${{github.run_number}}
+        - run: git commit -am "Automated stat update"
+        - run: git push
