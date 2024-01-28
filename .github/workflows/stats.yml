@@ -1,7 +1,7 @@
 name: "Sprint Stats"
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '30 23 * * *'
   workflow_dispatch:
 
 env:
@@ -20,7 +20,8 @@ jobs:
         - run: npm run render
           env:
             API_ACCESS_TOKEN: ${{ secrets.API_ACCESS_TOKEN }}
-            GH_ORG: ${{ secrets.GH_ORG }}
+            GH_ORG: safe-global
+            GH_ORG_PROJECT_NUMBER: 14
         - run: git checkout -b run_${{github.run_number}}
         - run: git add graphs
         - run: git config --global user.email "bot@rimeissner.dev"
