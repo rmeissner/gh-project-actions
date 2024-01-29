@@ -4,7 +4,7 @@ import fs from "fs";
 import { writeFile } from "./utils";
 
 export interface GroupConfig {
-  fill?: boolean;
+  fill?: boolean | string;
   backgroundColor?: string;
 }
 
@@ -47,7 +47,7 @@ const generatePNG = (
     data: {
       labels,
       datasets: datasets.map((ds) => ({
-        fill: true,
+        fill: "-1",
         ...ds,
         ...config.groupConfigs?.get(ds.label),
       })),

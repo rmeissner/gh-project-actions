@@ -1,4 +1,4 @@
-import { GraphDataset, render } from "./render"
+import { GraphDataset, GroupConfig, render } from "./render"
 import { Field, Iteration } from "./source"
 import { asDate, clean, readJsonFile, writeFile } from "./utils"
 
@@ -27,6 +27,6 @@ export const updateBurnDown = async (runId: string, stati: Field[], iteration: I
       type: "line",
       path: `stats/${name}/`,
       name: `${team}_burn_down`,
-      stacked: true,
+      stacked: true
     })
 }
