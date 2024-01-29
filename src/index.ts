@@ -12,13 +12,14 @@ import {
   complexityGroup,
   groupBy,
   iterationMapper,
+  labelReducer,
   renderSimple,
   staticLabels,
   statusMapper,
   stringLabels,
   teamMapper,
 } from "./utils";
-import { buildDatasets } from "./render";
+import { buildDatasets, dynamicRender } from "./render";
 import { updateBurnDown } from "./burn";
 import { MDWriter } from "./md";
 import fs from "fs";
@@ -46,11 +47,18 @@ const execute = async () => {
     if (startDate > now || endDate < now) continue;
     currentIteration = iteration;
     // Render Status per Team per Day graph
-    await renderSimple(iterationItems, teamMapper, statusMapper, {
-      path: `stats/${name}/status_per_team/`,
-      name: runId,
-      stacked: true,
-    });
+
+    await dynamicRender(
+      iterationItems,
+      labelReducer(teamMapper),
+      staticLabels(stati),
+      complexityGroup(teamMapper, statusMapper),
+      {
+        path: `stats/${name}/status_per_team/`,
+        name: runId,
+        stacked: true,
+      }
+    );
     // Create Core Status distribution for Core Burn Down Chart
     const coreBurn = await buildDatasets(
       iterationItems,
