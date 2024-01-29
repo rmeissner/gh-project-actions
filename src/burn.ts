@@ -20,7 +20,7 @@ export const updateBurnDown = async (runId: string, stati: Field[], iteration: I
       labels.push(label)
       const loadedData: GraphDataset[] = readJsonFile(`stats/${name}/burn_down_data/`, `${team}_${label}`)
       coreBurnDatasets.forEach((dataset, index) => {
-        dataset.data.push(loadedData?.at(index)?.data?.at(0) ?? 0)
+        dataset.data.push(loadedData?.at(index)?.data?.at(0) ?? undefined)
       })
     }
     await render(labels, coreBurnDatasets, {
