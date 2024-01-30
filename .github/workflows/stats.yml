@@ -24,5 +24,6 @@ jobs:
             GH_ORG_PROJECT_NUMBER: 14
         - run: git config --global user.email "bot@rimeissner.dev"
         - run: git config --global user.name "Stat Bot"
-        - run: git commit -am "Automated stat update"
+        - run: git add stats
+        - run: git commit -m "Automated stat update"
         - run: git push
