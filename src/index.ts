@@ -72,8 +72,7 @@ const execute = async () => {
     for (const team of teams) {
       // Create Team Status distribution for Team Burn Down Chart
       const iterationItemsPerTeam = groupBy(iterationItems, teamMapper);
-      const teamIterationItems = iterationItemsPerTeam[team.value];
-      if (!teamIterationItems) continue;
+      const teamIterationItems = iterationItemsPerTeam[team.value] ?? [];
       const teamBurn = await buildDatasets(
         teamIterationItems,
         stringLabels([runId]),
