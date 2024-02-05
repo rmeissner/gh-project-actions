@@ -35,7 +35,7 @@ const execute = async () => {
 
   const teams = await loadTeams();
   const stati = await loadStati();
-  const openIterations = await loadIterations(true);
+  const openIterations = await loadIterations();
   const itemsPerIteration = groupBy(data, iterationMapper);
   let currentIteration: Iteration = null;
   for (const iteration of openIterations) {
@@ -44,7 +44,7 @@ const execute = async () => {
     const name = clean(iteration.title);
     const startDate = asDate(iteration.startDate);
     const endDate = asDate(iteration.startDate, iteration.duration + 1);
-    if (startDate > now || endDate < now) continue;
+    if (startDate > now || endDate <= now) continue;
     currentIteration = iteration;
     // Render Status per Team per Day graph
 
@@ -87,6 +87,26 @@ const execute = async () => {
         teamBurn.datasets
       );
     }
+
+    const mdWriter = new MDWriter();
+    mdWriter
+      ._("## Current Iteration:", currentIteration.title)
+      ._("### Last Status", runId)
+      .img(`./status_per_team/${runId}.png`, "Current Status")
+      ._("### Core Burn Down Chart")
+      .img(`./core_burn_down.png`, "Core Burn Down Chart")
+      .nl();
+
+    for (const team of teams) {
+      mdWriter
+        ._("###", team.value, "Burn Down Chart")
+        .img(
+          `./${clean(team.value)}_burn_down.png`,
+          team.value + " Burn Down Chart"
+        )
+        .nl();
+    }
+    mdWriter.write(`stats/${name}/`, "README");
   }
 
   // Write MD file
@@ -100,7 +120,7 @@ const execute = async () => {
     mdWriter
       ._("## Current Iteration:", currentIteration.title)
       ._("### Status", runId)
-      .img(`./${name}/status_per_team/${runId}.png`, "Core Burn Down Chart")
+      .img(`./${name}/status_per_team/${runId}.png`, "Current Status")
       ._("### Core Burn Down Chart")
       .img(`./${name}/core_burn_down.png`, "Core Burn Down Chart")
       .nl();
