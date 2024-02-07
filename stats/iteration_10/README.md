@@ -1,6 +1,6 @@
 ## Current Iteration: Iteration 10
-### Last Status 2024-02-06
-<img src="./status_per_team/2024-02-06.png" width="600" title="Current Status">
+### Last Status 2024-02-07
+<img src="./status_per_team/2024-02-07.png" width="600" title="Current Status">
 
 ### Core Burn Down Chart
 <img src="./core_burn_down.png" width="600" title="Core Burn Down Chart">
