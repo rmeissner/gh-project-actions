@@ -26,3 +26,6 @@
 <img src="./dx_burn_down.png" width="600" title="DX Burn Down Chart">
 
 
+
+### Team member Status 2024-02-09
+<img src="./status_per_teammember/2024-02-09.png" width="600" title="Current Member Status">

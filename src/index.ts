@@ -8,6 +8,7 @@ import {
 } from "./source";
 import {
   asDate,
+  assigneesMapper,
   clean,
   complexityGroup,
   groupBy,
@@ -46,8 +47,21 @@ const execute = async () => {
     const endDate = asDate(iteration.startDate, iteration.duration + 1);
     if (startDate > now || endDate <= now) continue;
     currentIteration = iteration;
-    // Render Status per Team per Day graph
 
+    // Render Status per Team member per Day graph
+    await dynamicRender(
+      iterationItems,
+      labelReducer(assigneesMapper),
+      staticLabels(stati),
+      complexityGroup(assigneesMapper, statusMapper),
+      {
+        path: `stats/${name}/status_per_teammember/`,
+        name: runId,
+        stacked: true,
+      }
+    );
+
+    // Render Status per Team per Day graph
     await dynamicRender(
       iterationItems,
       labelReducer(teamMapper),
@@ -106,7 +120,9 @@ const execute = async () => {
         )
         .nl();
     }
-    mdWriter.write(`stats/${name}/`, "README");
+    mdWriter._("### Team member Status", runId)
+      .img(`./status_per_teammember/${runId}.png`, "Current Member Status")
+      .write(`stats/${name}/`, "README");
   }
 
   // Write MD file
