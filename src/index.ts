@@ -19,6 +19,7 @@ import {
   statusMapper,
   stringLabels,
   teamMapper,
+  writeFile,
 } from "./utils";
 import { buildDatasets, dynamicRender } from "./render";
 import { updateBurnDown } from "./burn";
@@ -47,6 +48,9 @@ const execute = async () => {
     const endDate = asDate(iteration.startDate, iteration.duration + 1);
     if (startDate > now || endDate <= now) continue;
     currentIteration = iteration;
+
+    // Persis items for iteration
+    writeFile(`stats/${name}/data_snapshots/`, `items_${runId}`, "json", JSON.stringify(iterationItems))
 
     // Render Status per Team member per Day graph
     await dynamicRender(

@@ -5,10 +5,11 @@ export interface Field {
   color?: string | undefined; 
 }
 
-export interface Assignees {
-  users: {
+export interface Content {
+  title: string,
+  assignees: {
     nodes: Field[]
-  } 
+  }
 }
 
 export interface ProjectItem {
@@ -16,7 +17,7 @@ export interface ProjectItem {
   complexity: Field;
   team: Field;
   status: Field;
-  assignees: Assignees;
+  content: Content;
 }
 
 interface ItemsQueryResult {
@@ -63,23 +64,26 @@ const QUERY_ITEMS = `query ($login: String!, $number: Int!, $next: String) {
               value: name
             }
           }
-          assignees: content {
+          content {
             ... on DraftIssue {
-              users: assignees(first: 1) {
+              title
+              assignees(first: 5) {
                 nodes {
                   value: login
                 }
               }
             }
             ... on Issue {
-              users: assignees(first: 1) {
+              title
+              assignees(first: 5) {
                 nodes {
                   value: login
                 }
               }
             }
             ... on PullRequest {
-              users: assignees(first: 1) {
+              title
+              assignees(first: 5) {
                 nodes {
                   value: login
                 }
