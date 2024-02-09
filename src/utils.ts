@@ -23,11 +23,12 @@ export const asDate = (value: string | Date, daysOffset: number = 0): Date => {
   return date;
 };
 
-export type ItemMapper = (item: ProjectItem) => Field;
+export type ItemMapper = (item: ProjectItem) => Field | undefined;
 
-export const iterationMapper = (item: ProjectItem): Field => item.iteration;
-export const teamMapper = (item: ProjectItem): Field => item.team;
-export const statusMapper = (item: ProjectItem): Field => item.status;
+export const iterationMapper: ItemMapper = (item: ProjectItem): Field => item.iteration;
+export const teamMapper: ItemMapper = (item: ProjectItem): Field => item.team;
+export const assigneesMapper: ItemMapper = (item: ProjectItem): Field => item.assignees?.users?.nodes?.at(0);
+export const statusMapper: ItemMapper = (item: ProjectItem): Field => item.status;
 
 export const labelReducer = (
   keyMapper: ItemMapper
@@ -66,8 +67,8 @@ export const complexityGroup = (
     return items
       .filter(
         (item) =>
-          (!labelMapper || labelMapper(item)?.value === label) &&
-          (!groupMapper || groupMapper(item)?.value === group) &&
+          (!labelMapper || (labelMapper(item)?.value ?? "unknown") === label) &&
+          (!groupMapper || (groupMapper(item)?.value ?? "unknown") === group) &&
           !!item.complexity?.value
       )
       .reduce((sum, item) => sum + parseInt(item.complexity.value), 0);
