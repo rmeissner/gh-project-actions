@@ -34,13 +34,31 @@ const execute = async () => {
     path: "stats/total_complexity/",
     name: runId,
   });
-
   const teams = await loadTeams();
   const stati = await loadStati();
-  const openIterations = await loadIterations();
+  const iterations = await loadIterations();
   const itemsPerIteration = groupBy(data, iterationMapper);
+
+  // Stats for recent iterations
+  const recentIterations = Array.from(iterations)
+    .filter((item) => asDate(item.startDate) <= new Date())
+    .sort((left, right) => left.startDate.localeCompare(right.startDate))
+    .slice(-4)
+    .map((i) => i.title);
+
+  await renderSimple(
+    data.filter((item) => recentIterations.indexOf(item.iteration?.value) >= 0),
+    assigneesMapper,
+    iterationMapper,
+    {
+      path: "stats/member_complexity/",
+      name: runId,
+    }
+  );
+
+  // Stats for active iterations
   let currentIteration: Iteration = null;
-  for (const iteration of openIterations) {
+  for (const iteration of iterations) {
     const iterationItems = itemsPerIteration[iteration.title];
     if (!iterationItems) continue;
     const name = clean(iteration.title);
@@ -50,7 +68,12 @@ const execute = async () => {
     currentIteration = iteration;
 
     // Persis items for iteration
-    writeFile(`stats/${name}/data_snapshots/`, `items_${runId}`, "json", JSON.stringify(iterationItems))
+    writeFile(
+      `stats/${name}/data_snapshots/`,
+      `items_${runId}`,
+      "json",
+      JSON.stringify(iterationItems)
+    );
 
     // Render Status per Team member per Day graph
     await dynamicRender(
@@ -124,7 +147,8 @@ const execute = async () => {
         )
         .nl();
     }
-    mdWriter._("### Team member Status", runId)
+    mdWriter
+      ._("### Team member Status", runId)
       .img(`./status_per_teammember/${runId}.png`, "Current Member Status")
       .write(`stats/${name}/`, "README");
   }
