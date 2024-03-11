@@ -16,6 +16,7 @@ export interface ProjectItem {
   iteration: Field;
   complexity: Field;
   team: Field;
+  qa: Field;
   status: Field;
   content: Content;
 }
@@ -60,6 +61,11 @@ const QUERY_ITEMS = `query ($login: String!, $number: Int!, $next: String) {
             }
           }
           status: fieldValueByName(name: "Status") {
+            ... on ProjectV2ItemFieldSingleSelectValue {
+              value: name
+            }
+          }
+          qa: fieldValueByName(name: "QA") {
             ... on ProjectV2ItemFieldSingleSelectValue {
               value: name
             }
@@ -141,7 +147,7 @@ const QUERY_ITERATIONS = `query ($login: String!, $number: Int!) {
 interface SingleSelectQueryResult {
   org: {
     project: {
-      team: {
+      select: {
         options: Field[];
       };
     };
@@ -151,7 +157,7 @@ interface SingleSelectQueryResult {
 const QUERY_SINGLE_SELECT = `query ($login: String!, $number: Int!, $name: String!) {
   org: organization(login: $login) {
     project: projectV2(number: $number) {
-      team: field(name: $name) {
+      select: field(name: $name) {
         ... on ProjectV2SingleSelectField {
           options {
             value: name,
@@ -173,7 +179,7 @@ export const loadTeams = async (): Promise<Field[]> => {
     number: githubOrgProjectNumber,
     name: "Team"
   });
-  return response.org.project.team.options;
+  return response.org.project.select.options;
 };
 
 export const loadIterations = async (openOnly: boolean = false): Promise<Iteration[]> => {
@@ -192,7 +198,16 @@ export const loadStati = async (): Promise<Field[]> => {
     number: githubOrgProjectNumber,
     name: "Status"
   });
-  return response.org.project.team.options;
+  return response.org.project.select.options;
+};
+
+export const loadQA = async (): Promise<Field[]> => {
+  const response: SingleSelectQueryResult = await octokit.graphql(QUERY_SINGLE_SELECT, {
+    login: githubOrg,
+    number: githubOrgProjectNumber,
+    name: "QA"
+  });
+  return response.org.project.select.options;
 };
 
 export const loadItems = async (): Promise<ProjectItem[]> => {

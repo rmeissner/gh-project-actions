@@ -29,6 +29,7 @@ export const iterationMapper: ItemMapper = (item: ProjectItem): Field => item.it
 export const teamMapper: ItemMapper = (item: ProjectItem): Field => item.team;
 export const assigneesMapper: ItemMapper = (item: ProjectItem): Field => item.content?.assignees?.nodes?.at(0);
 export const statusMapper: ItemMapper = (item: ProjectItem): Field => item.status;
+export const qaMapper: ItemMapper = (item: ProjectItem): Field => item.qa;
 
 export const labelReducer = (
   keyMapper: ItemMapper

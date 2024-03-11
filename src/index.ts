@@ -3,6 +3,7 @@ import {
   Iteration,
   loadItems,
   loadIterations,
+  loadQA,
   loadStati,
   loadTeams,
 } from "./source";
@@ -14,6 +15,7 @@ import {
   groupBy,
   iterationMapper,
   labelReducer,
+  qaMapper,
   renderSimple,
   staticLabels,
   statusMapper,
@@ -36,6 +38,7 @@ const execute = async () => {
   });
   const teams = await loadTeams();
   const stati = await loadStati();
+  const qa = await loadQA();
   const iterations = await loadIterations();
   const itemsPerIteration = groupBy(data, iterationMapper);
 
@@ -109,6 +112,28 @@ const execute = async () => {
     );
 
     updateBurnDown(runId, stati, iteration, "core", coreBurn.datasets);
+
+    await dynamicRender(
+      iterationItems,
+      staticLabels(qa),
+      labelReducer(teamMapper),
+      complexityGroup(qaMapper, teamMapper),
+      {
+        path: `stats/${name}/qa/`,
+        name: runId,
+        stacked: true,
+      }
+    );
+
+    // Create Core Status distribution for Core Burn Down Chart
+    const qaBurn = await buildDatasets(
+      iterationItems,
+      stringLabels([runId]),
+      staticLabels(qa),
+      complexityGroup(undefined, qaMapper)
+    );
+
+    updateBurnDown(runId, qa, iteration, "qa", qaBurn.datasets);
 
     for (const team of teams) {
       // Create Team Status distribution for Team Burn Down Chart
