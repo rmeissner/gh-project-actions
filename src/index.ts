@@ -116,8 +116,8 @@ const execute = async () => {
     await dynamicRender(
       iterationItems,
       staticLabels(qa),
-      labelReducer(teamMapper),
-      complexityGroup(qaMapper, teamMapper),
+      staticLabels(stati),
+      complexityGroup(qaMapper, statusMapper),
       {
         path: `stats/${name}/qa/`,
         name: runId,
