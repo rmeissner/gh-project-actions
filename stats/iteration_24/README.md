@@ -1,6 +1,6 @@
 ## Current Iteration: Iteration 24
-### Last Status 2024-08-31
-<img src="./status_per_team/2024-08-31.png" width="600" title="Current Status">
+### Last Status 2024-09-01
+<img src="./status_per_team/2024-09-01.png" width="600" title="Current Status">
 
 ### Core Burn Down Chart
 <img src="./core_burn_down.png" width="600" title="Core Burn Down Chart">
@@ -27,5 +27,5 @@
 
 
 
-### Team member Status 2024-08-31
-<img src="./status_per_teammember/2024-08-31.png" width="600" title="Current Member Status">
+### Team member Status 2024-09-01
+<img src="./status_per_teammember/2024-09-01.png" width="600" title="Current Member Status">
