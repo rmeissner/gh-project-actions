@@ -27,5 +27,30 @@
 
 
 
+### Safenet Burn Down Chart
+<img src="./safenet_burn_down.png" width="600" title="Safenet Burn Down Chart">
+
+
+
+### Integrations Burn Down Chart
+<img src="./integrations_burn_down.png" width="600" title="Integrations Burn Down Chart">
+
+
+
+### Wallet Burn Down Chart
+<img src="./wallet_burn_down.png" width="600" title="Wallet Burn Down Chart">
+
+
+
+### Operations Burn Down Chart
+<img src="./operations_burn_down.png" width="600" title="Operations Burn Down Chart">
+
+
+
+### Platform Burn Down Chart
+<img src="./platform_burn_down.png" width="600" title="Platform Burn Down Chart">
+
+
+
 ### Team member Status 2024-09-08
 <img src="./status_per_teammember/2024-09-08.png" width="600" title="Current Member Status">

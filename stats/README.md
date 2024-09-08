@@ -31,3 +31,28 @@
 <img src="./iteration_25/dx_burn_down.png" width="600" title="DX Burn Down Chart">
 
 
+
+### Safenet Burn Down Chart
+<img src="./iteration_25/safenet_burn_down.png" width="600" title="Safenet Burn Down Chart">
+
+
+
+### Integrations Burn Down Chart
+<img src="./iteration_25/integrations_burn_down.png" width="600" title="Integrations Burn Down Chart">
+
+
+
+### Wallet Burn Down Chart
+<img src="./iteration_25/wallet_burn_down.png" width="600" title="Wallet Burn Down Chart">
+
+
+
+### Operations Burn Down Chart
+<img src="./iteration_25/operations_burn_down.png" width="600" title="Operations Burn Down Chart">
+
+
+
+### Platform Burn Down Chart
+<img src="./iteration_25/platform_burn_down.png" width="600" title="Platform Burn Down Chart">
+
+
