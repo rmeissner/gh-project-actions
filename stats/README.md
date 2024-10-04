@@ -1,11 +1,11 @@
 # Safe{Core} Sprint Stats
-<img src="./total_complexity/2024-10-03.png" width="600" title="Total Complexity">
+<img src="./total_complexity/2024-10-04.png" width="600" title="Total Complexity">
 
 
 
 ## Current Iteration: Iteration 27
-### Status 2024-10-03
-<img src="./iteration_27/status_per_team/2024-10-03.png" width="600" title="Current Status">
+### Status 2024-10-04
+<img src="./iteration_27/status_per_team/2024-10-04.png" width="600" title="Current Status">
 
 ### Core Burn Down Chart
 <img src="./iteration_27/core_burn_down.png" width="600" title="Core Burn Down Chart">
