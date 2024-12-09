@@ -1,4 +1,4 @@
-## Current Iteration: Iteration 31
+## Current Iteration: Iteration 32
 ### Last Status 2024-12-09
 <img src="./status_per_team/2024-12-09.png" width="600" title="Current Status">
 
