@@ -1,4 +1,4 @@
 # Safe{Core} Sprint Stats
-<img src="./total_complexity/2025-01-25.png" width="600" title="Total Complexity">
+<img src="./total_complexity/2025-01-26.png" width="600" title="Total Complexity">
 
 
